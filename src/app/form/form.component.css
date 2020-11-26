@@ -1,0 +1,16 @@
+.borde > h2 {
+  border-bottom: 2px solid #efcd31 !important;
+  font-weight: bold;
+}
+
+.borde > h3 {
+  border-bottom: 2px solid #efcd31 !important;
+}
+
+.example-margin {
+  margin: 0 10px;
+}
+
+.example-full-width {
+  width: 100%;
+}

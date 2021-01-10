@@ -1,0 +1,42 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Titulo</th>
+            <th>Descripción</th>
+            <th>Ambiente</th>
+
+            <th>Operaciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor=" let transmision of transmisionService.transmisiones">
+            <td>{{transmision.titulo}}</td>
+            <td>{{transmision.descripcion}}</td>
+            <td>{{transmision.ambiente}}</td>
+
+            <td>
+                <button type="button" class="btn btn-sm mr-1" (click)="editTx(transmision)" >
+                    <i class="material-icons">edit</i> 
+                </button>
+
+                <button type="button" class="btn btn-sm mr-1">
+                    <i class="material-icons">visibility</i> 
+                </button>
+              
+                <button type="button" class="btn btn-sm mr-1" (click)="download(transmision._id,transmision.titulo)">
+                    <i class="material-icons">download</i> 
+                </button>
+                <button type="button" class="btn btn-sm mr-1">
+                    <i class="material-icons">send</i> 
+                </button>
+                <button type="button" class="btn btn-danger btn-sm" (click)="deleteTx(transmision)">
+                    <i class="material-icons">delete</i> 
+                </button>
+             
+               
+            </td>
+
+        </tr>
+
+    </tbody>
+</table>

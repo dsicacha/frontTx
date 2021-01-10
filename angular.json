@@ -123,5 +123,8 @@
       }
     }
   },
-  "defaultProject": "frontTx"
+  "defaultProject": "frontTx",
+  "cli": {
+    "analytics": "ac897de8-d74e-4e54-99a4-2995265efac6"
+  }
 }

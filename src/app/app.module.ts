@@ -6,17 +6,24 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormComponent } from './form/form.component';
 import { NavComponent } from './nav/nav.component';
 import {MaterialModule} from './material.module';
+import { ListaTxComponent } from './lista-tx/lista-tx.component';
+import{HttpClientModule} from '@angular/common/http';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
     FormComponent,
-    NavComponent
+    NavComponent,
+    ListaTxComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    HttpClientModule,
+    FormsModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,212 +1,247 @@
-<mat-expansion-panel class="mb-4">
-    <mat-expansion-panel-header>
-       <mat-panel-title class="borde">
+<form #transmisionForm="ngForm" (ngSubmit)="addTransmision(transmisionForm)">
+  <mat-accordion>
+    <mat-expansion-panel class="mb-4">
+      <mat-expansion-panel-header>
+        <mat-panel-title class="borde">
           <h2>Datos Basicos de la Transmisión </h2>
-       </mat-panel-title>    
-    </mat-expansion-panel-header>
-
-    <mat-form-field appearance="fill" class="mr-4 example-full-width">
-      <mat-label>Titulo</mat-label>
-      <input matInput type="text">
-    </mat-form-field>
-  
-    
-    <mat-form-field appearance="fill" class="example-full-width">
-      <mat-label>Descripción</mat-label>
-      <textarea matInput placeholder="Que hace la Tx"></textarea>
-    </mat-form-field>
-  
-
-   <mat-form-field appearance="fill" class="mr-4 w-100">
-    <mat-label>Ambiente</mat-label>
-    <select matNativeControl [(ngModel)]="form.ambiente" name="ambiente">
-      <option value="" selected></option>
-      <option *ngFor="let ambiente of ambientes" [value]="ambiente.value">
-        {{ ambiente.viewValue }}
-      </option>
-    </select>
-  </mat-form-field>
-
-   <mat-expansion-panel class="mb-2">
-      <mat-expansion-panel-header>
-         <mat-panel-title class="borde">
-             <h3>Datos responsable de la Transmisión</h3>
-          
-         </mat-panel-title>          
+        </mat-panel-title>
       </mat-expansion-panel-header>
-      
-      <mat-form-field appearance="fill" class="mr-4 ">
-          <mat-label>Nombre</mat-label>
-          <input matInput  type="text">
-        </mat-form-field>
-    
-        <mat-form-field appearance="fill" class="mr-4 ">
-          <mat-label>Telefono</mat-label>
-          <input matInput  type="tel" >
-        </mat-form-field>
 
-        <mat-form-field appearance="fill" class="mr-4 ">
-          <mat-label>Email</mat-label>
-          <input matInput type="email" >
-        </mat-form-field>
+      <mat-form-field appearance="fill" class="mr-4 example-full-width">
+        <mat-label>Titulo</mat-label>
+        <input matInput type="text" name="titulo" [(ngModel)]="form.titulo">
+      </mat-form-field>
 
-        <mat-form-field appearance="fill" class="mr-4">
-          <mat-label>Usuario de Red</mat-label>
-          <input matInput type="text"  >
-        </mat-form-field>     
-      
-   </mat-expansion-panel>
 
-   <mat-expansion-panel class="mb-2">
+      <mat-form-field appearance="fill" class="example-full-width">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput placeholder="Que hace la Tx" name="descripcion" [(ngModel)]="form.descripcion"></textarea>
+      </mat-form-field>
+
+
+      <mat-form-field appearance="fill" class="mr-4 w-100">
+        <mat-label>Ambiente</mat-label>
+        <select matNativeControl [(ngModel)]="form.ambiente" name="ambiente">
+          <option value="" selected></option>
+          <option *ngFor="let ambiente of ambientes" [value]="ambiente.value">
+            {{ ambiente.viewValue }}
+          </option>
+        </select>
+      </mat-form-field>
+
+      <mat-accordion>
+        <mat-expansion-panel class="mb-2">
+          <mat-expansion-panel-header>
+            <mat-panel-title class="borde">
+              <h3>Responsable de la Transmisión</h3>
+
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <mat-form-field appearance="fill" class="mr-4 ">
+            <mat-label>Nombre</mat-label>
+            <input matInput type="text" name="nombre" [(ngModel)]="form.nombre">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="mr-4 ">
+            <mat-label>Telefono</mat-label>
+            <input matInput type="tel" name="telefono" [(ngModel)]="form.telefono">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="mr-4 ">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" name="email" [(ngModel)]="form.email">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="mr-4">
+            <mat-label>Usuario de Red</mat-label>
+            <input matInput type="text" name="usuarioRed" [(ngModel)]="form.usuarioRed">
+          </mat-form-field>
+
+        </mat-expansion-panel>
+
+
+        <mat-expansion-panel class="mb-2">
+          <mat-expansion-panel-header>
+            <mat-panel-title class="borde">
+              <h3>Área de negocio de la Transmisión</h3>
+
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <mat-form-field appearance="fill" class="mr-4">
+            <mat-label>Filial</mat-label>
+            <select matNativeControl name="filial" [(ngModel)]="form.filial">
+              <option value="" selected></option>
+              <option *ngFor="let filial of filiales" [value]="filial.value">
+                {{filial.viewValue}}
+              </option>
+            </select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="mr-4">
+            <mat-label>Domino</mat-label>
+            <select matNativeControl name="dominio" [(ngModel)]="form.dominio">
+              <option value="" selected></option>
+              <option *ngFor="let dominio of dominios" [value]="dominio.value">
+                {{dominio.viewValue}}
+              </option>
+            </select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="mr-4" *ngIf="!!form.dominio">
+            <mat-label>SubDomino</mat-label>
+            <select matNativeControl name="subDominio" [(ngModel)]="form.subdominio">
+              <option value="" selected></option>
+              <option *ngFor="let subDominio of subDominio[form.dominio]" [value]="subDominio.value">
+                {{subDominio.viewValue}}
+              </option>
+            </select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="mr-4">
+            <mat-label>Proceso</mat-label>
+            <input matInput type="text" name="proceso" [(ngModel)]="form.proceso">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="mr-4">
+            <mat-label>Codigo Unico de Aplicación MAC</mat-label>
+            <input matInput type="text" name="codigoMac" [(ngModel)]="form.codigoMac">
+          </mat-form-field>
+
+        </mat-expansion-panel>
+      </mat-accordion>
+
+    </mat-expansion-panel>
+
+    <mat-expansion-panel class="mb-4">
       <mat-expansion-panel-header>
-         <mat-panel-title class="borde">
-             <h3>Información área de negocio de la Transmisión</h3>
-          
-         </mat-panel-title>          
+        <mat-panel-title class="borde">
+          <h2>Datos Origen de la Tx</h2>
+        </mat-panel-title>
       </mat-expansion-panel-header>
-      
+
+
+
+      <!--
+      <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title class="borde">
+          <h3>Información Tecnica de la Transmisión</h3>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+    -->
+
+
+      <mat-form-field appearance="fill" class="mr-4 w-100">
+        <mat-label>Usuario de conexión (CNXG)</mat-label>
+        <input matInput type="text" name="usuarioCnxOrigen" [(ngModel)]="form.usuCnxOri" />
+      </mat-form-field>
+
+      <section class="example-section">
+        <label class="example-margin">Método de autenticación:</label>
+        <mat-radio-group appearance="fill" name="metodoAutenticacion" [(ngModel)]="form.metAutOri">
+          <mat-radio-button class="example-margin" value="Contraseña">Contraseña</mat-radio-button>
+          <mat-radio-button class="example-margin" value="Llaves">Llaves</mat-radio-button>
+        </mat-radio-group>
+      </section>
+
+      <section class="example-section">
+        <label class="example-margin">Red de conexion:</label>
+        <mat-radio-group appearance="fill" name="UbicacionSvrOrigen" [(ngModel)]="form.ubiSvrOri">
+          <mat-radio-button class="example-margin" value="Interna">Interna</mat-radio-button>
+          <mat-radio-button class="example-margin" value="Externa">Externa</mat-radio-button>
+        </mat-radio-group>
+      </section>
+
+      <!--</mat-expansion-panel>-->
+    </mat-expansion-panel>
+
+    <mat-expansion-panel class="mb-4">
+      <mat-expansion-panel-header>
+        <mat-panel-title class="borde">
+          <h2>Datos Destino de la Tx</h2>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+
+
+      <!--
+         <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title class="borde">
+          <h3>Información Tecnica de la Transmisión</h3>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+    -->
+
       <mat-form-field appearance="fill" class="mr-4">
-          <mat-label>Filial</mat-label>
-          <select matNativeControl  name="filial">
-            <option value="" selected></option>
-            <option *ngFor="let filial of filiales" [value]="filial.value">
-              {{filial.viewValue}}
-            </option>
-          </select>
-        </mat-form-field>
+        <mat-label>Usuario de conexión (CNXG)</mat-label>
+        <input matInput type="text" name="usuarioCnxDestino" [(ngModel)]="form.usuCnxDest" />
+      </mat-form-field>
 
-        <mat-form-field appearance="fill" class="mr-4">
-          <mat-label>Domino</mat-label>
-          <select matNativeControl  name="dominio" [(ngModel)]="form.dominio">
-            <option value="" selected></option>
-            <option *ngFor="let dominio of dominios" [value]="dominio.value">
-              {{dominio.viewValue}}
-            </option>
-          </select>
-        </mat-form-field>
+      <section class="example-section">
+        <label class="example-margin">Protocolo de conexión:</label>
+        <mat-radio-group appearance="fill" name="Protocolo" [(ngModel)]="form.protocoloTxDest">
+          <mat-radio-button class="example-margin" value="SFTP">SFTP</mat-radio-button>
+          <mat-radio-button class="example-margin" value="CD">CD</mat-radio-button>
+          <mat-radio-button class="example-margin" value="FTPS">FTPS</mat-radio-button>
+        </mat-radio-group>
+      </section>
 
-        <mat-form-field appearance="fill" class="mr-4" *ngIf="!!form.dominio">
-          <mat-label>SubDomino</mat-label>
-          <select matNativeControl  name="subDominio">
-            <option value="" selected></option>
-            <option *ngFor="let subDominio of subDominio[form.dominio]" [value]="subDominio.value">
-              {{subDominio.viewValue}}
-            </option>
-          </select>
-        </mat-form-field>
-    
-        <mat-form-field appearance="fill" class="mr-4">
-          <mat-label>Proceso</mat-label>
-          <input matInput type="text"  >
-        </mat-form-field>
+      <mat-form-field appearance="fill" class="mr-4">
+        <mat-label>Puerto</mat-label>
+        <input matInput type="text" name="puerto" [(ngModel)]="form.puerto" />
+      </mat-form-field>
 
-        <mat-form-field appearance="fill" class="mr-4">
-          <mat-label>Codigo Unico de Aplicación MAC</mat-label>
-          <input matInput type="email" >
-        </mat-form-field>  
-      
-   </mat-expansion-panel>
-  
-</mat-expansion-panel>
+      <section class="example-section">
+        <label class="example-margin">Tipo Servidor:</label>
+        <mat-radio-group appearance="fill" name="tipoSvr" [(ngModel)]="form.tipoSvr">
+          <mat-radio-button class="example-margin" value="DNS">DNS</mat-radio-button>
+          <mat-radio-button class="example-margin" value="IP">IP</mat-radio-button>
+        </mat-radio-group>
+      </section>
 
-<mat-expansion-panel class="mb-4">
-  <mat-expansion-panel-header>
-    <mat-panel-title class="borde">
-      <h2>Datos Origen de la Tx</h2>
-    </mat-panel-title>
-  </mat-expansion-panel-header>
+      <mat-form-field appearance="fill" class="mr-4">
+        <mat-label>Servidor</mat-label>
+        <input matInput type="text" name="servidor" [(ngModel)]="form.servidor" />
+      </mat-form-field>
 
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title class="borde">
-        <h3>Información Tecnica de la Transmisión</h3>
-      </mat-panel-title>
-    </mat-expansion-panel-header>
+      <mat-form-field appearance="fill" class="mr-4">
+        <mat-label>Usuario de conexión a servidor</mat-label>
+        <input matInput type="text" name="usuarioCnxDestino" [(ngModel)]="form.usuSvrDest" />
+      </mat-form-field>
 
- 
+      <mat-form-field appearance="fill" class="mr-4 btn-block">
+        <mat-label>Ruta de Entrega</mat-label>
+        <input matInput type="text" name="rutaEntrega" [(ngModel)]="form.rutaEntrega" />
+      </mat-form-field>
 
-    <mat-form-field appearance="fill" class="mr-4 w-100">
-      <mat-label>Usuario de conexión (CNXG)</mat-label>
-      <input matInput type="text" [(ngModel)]="form.usuarioCnx" />
-    </mat-form-field>
+      <section class="example-section">
+        <label class="example-margin">Método de autenticación:</label>
+        <mat-radio-group appearance="fill" name="metodoAut" [(ngModel)]="form.metAutDest">
+          <mat-radio-button class="example-margin" value="Contraseña">Contraseña</mat-radio-button>
+          <mat-radio-button class="example-margin" value="Llaves">Llaves</mat-radio-button>
+        </mat-radio-group>
+      </section>
 
-    <section class="example-section">
-      <label class="example-margin">Método de autenticación:</label>
-      <mat-radio-group appearance="fill" [(ngModel)]="form.metodoAutenticacion">
-        <mat-radio-button class="example-margin" value="Contraseña"
-          >Contraseña</mat-radio-button
-        >
-        <mat-radio-button class="example-margin" value="Llaves"
-          >Llaves</mat-radio-button
-        >
-      </mat-radio-group>
-    </section>
+      <section class="example-section">
+        <label class="example-margin">Red de conexion:</label>
+        <mat-radio-group appearance="fill" name="UbicacionSvrDestino" [(ngModel)]="form.ubiSvrDest">
+          <mat-radio-button class="example-margin" value="Interna">Interna</mat-radio-button>
+          <mat-radio-button class="example-margin" value="Externa">Externa</mat-radio-button>
+        </mat-radio-group>
+      </section>
+      <!--</mat-expansion-panel>-->
+    </mat-expansion-panel>
 
-    <section class="example-section">
-      <label class="example-margin">Red de conexion:</label>
-      <mat-radio-group appearance="fill" [(ngModel)]="form.UbicacionServidor">
-        <mat-radio-button class="example-margin" value="Interna"
-          >Interna</mat-radio-button
-        >
-        <mat-radio-button class="example-margin" value="Externa"
-          >Externa</mat-radio-button
-        >
-      </mat-radio-group>
-    </section>
-  </mat-expansion-panel>
-</mat-expansion-panel>
+    <button class="btn btn-light btn-lg btn-block mb-2">
+      Clean
+    </button>
+    <button class="btn btn-warning btn-lg btn-block mb-2">
+      Save
+    </button>
+  </mat-accordion>
+</form>
 
-<mat-expansion-panel class="mb-4">
-  <mat-expansion-panel-header>
-    <mat-panel-title class="borde">
-      <h2>Datos Destino de la Tx</h2>
-    </mat-panel-title>
-  </mat-expansion-panel-header>
 
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title class="borde">
-        <h3>Información Tecnica de la Transmisión</h3>
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-
-    <mat-form-field appearance="fill" class="mr-4">
-      <mat-label>Ambiente</mat-label>
-      <select matNativeControl name="ambiente">
-        <option value="" selected></option>
-        <option *ngFor="let ambiente of ambientes" [value]="ambiente.value">
-          {{ ambiente.viewValue }}
-        </option>
-      </select>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill" class="mr-4">
-      <mat-label>Usuario de conexión (CNXG)</mat-label>
-      <input matInput type="text" />
-    </mat-form-field>
-
-    <section class="example-section">
-      <label class="example-margin">Método de autenticación:</label>
-      <mat-radio-group appearance="fill">
-        <mat-radio-button class="example-margin" value="Contraseña"
-          >Contraseña</mat-radio-button
-        >
-        <mat-radio-button class="example-margin" value="Llaves"
-          >Llaves</mat-radio-button
-        >
-      </mat-radio-group>
-    </section>
-
-    <section class="example-section">
-      <label class="example-margin">Red de conexion:</label>
-      <mat-radio-group appearance="fill">
-        <mat-radio-button class="example-margin" value="Interna"
-          >Interna</mat-radio-button
-        >
-        <mat-radio-button class="example-margin" value="Externa"
-          >Externa</mat-radio-button
-        >
-      </mat-radio-group>
-    </section>
-  </mat-expansion-panel>
-</mat-expansion-panel>

@@ -41,4 +41,12 @@ export class DestinoService {
   deleteDestino(_id:string){
     return this.http.delete(this.URL_API+'/'+_id);
   };
+
+  getDestino(_id:string){
+    return this.http.get(this.URL_API+'/'+_id);
+  }
+
+  putDestino(destino: Destino){
+    return this.http.put(this.URL_API+'/'+destino._id, destino);
+  }
 }

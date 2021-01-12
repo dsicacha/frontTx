@@ -66,11 +66,28 @@ export class ListaTxComponent implements OnInit {
     }
   }
 
-  editTx(transmision: any) {
+  async editTx(transmision: any) {
 
-    alert(this.FormComponent);
+    
 
+    try {
+      const origen = await this.OrigenService.getOrigen(transmision.origen).toPromise();
+      const destino = await this.DestinoService.getDestino(transmision.destino).toPromise();
+
+      this.transmisionService.SetFormulario({transmision,origen,destino});
+    
+      
+    } catch (error) {
+      console.log(error);
+    }
   }
+   
+
+
+  
+    
+
+  
 
   download(id: string, filename: string) {
 

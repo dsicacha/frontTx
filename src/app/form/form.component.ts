@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TransmisionService } from '../services/transmision.service'
 import { DestinoService } from '../services/destino.service';
 import { OrigenService } from '../services/origen.service';
 import { NgForm } from '@angular/forms';
-import { ListaTxComponent } from '../lista-tx/lista-tx.component';
+import { MatAccordion } from '@angular/material/expansion';
+import { createUrlResolverWithoutPackagePrefix } from '@angular/compiler';
+
 
 
 interface Filial {
@@ -82,7 +84,7 @@ export class FormComponent implements OnInit {
     { value: 'Desarrollo', viewValue: 'Desarrollo' },
   ];
 
-   form = {
+  form = {
     titulo: '',
     descripcion: '',
     nombre: '',
@@ -106,10 +108,24 @@ export class FormComponent implements OnInit {
     usuSvrDest: '',
     metAutDest: '',
     ubiSvrDest: '',
-    rutaEntrega: ''
+    rutaEntrega: '',
+    _id: null,
+    idOrigen: null,
+    IdDestino: null
   };
 
-  constructor(public TransmisionService: TransmisionService, public OrigenService: OrigenService, public DestinoService: DestinoService) { }
+  @ViewChild(MatAccordion) accordion: MatAccordion;
+  constructor(public TransmisionService: TransmisionService, public OrigenService: OrigenService, public DestinoService: DestinoService) {
+    this.TransmisionService.observableForm$.subscribe(
+      res => {
+        this.AsignarToEditTx(res);
+
+        this.accordion.openAll();
+
+      },
+      err => console.log(err)
+    )
+  }
 
   ngOnInit(): void {
 
@@ -124,41 +140,67 @@ export class FormComponent implements OnInit {
     );
   }
 
-  addTransmision(form: NgForm) {
+  async addTransmision(form: NgForm) {
 
-    this.asignarOrigen();
-    this.asignarDestino();
-    this.asignarTransmision();
+    if (this.form._id == null) {
 
-    this.OrigenService.createOrigen(this.OrigenService.selectedOrigen).subscribe(
-      (res) => {        
-        this.TransmisionService.selectedTransmision.origen = res;
-        
+      console.log('esto va a crear');
 
-      },
-      (err) => console.error(err),
-      ()=>{
-        this.DestinoService.createDestino(this.DestinoService.SelectedDestino).subscribe(
-          (res) => {
-            this.TransmisionService.selectedTransmision.destino = res;
-          },
-          (err) => console.log(err),
-          ()=>{
-            this.TransmisionService.createTransmision(this.TransmisionService.selectedTransmision).subscribe(
-              (res) => {
-                alert("transmisión creada correctamente");
-                this.getTransmisiones();
-                form.reset();
-              },
-              (err) => console.log(err)
-            );
+      this.asignarOrigen();
+      this.asignarDestino();
+      this.asignarTransmision();
 
-          }
-        );
+      try {
+        const idOrigen = await this.OrigenService.createOrigen(this.OrigenService.selectedOrigen).toPromise();
+        const IdDestino = await this.DestinoService.createDestino(this.DestinoService.SelectedDestino).toPromise();
+        this.TransmisionService.selectedTransmision.origen = idOrigen;
+        this.TransmisionService.selectedTransmision.destino = IdDestino;
+        await this.TransmisionService.createTransmision(this.TransmisionService.selectedTransmision).toPromise();
+        alert("transmisión creada correctamente");
+        this.getTransmisiones();
+        form.reset();
+        this.form._id = null;
+        this.accordion.closeAll();
+
+      } catch (error) {
+        console.log(error);
       }
-    )
-    
-  
+
+    } else {
+      this.asignarOrigen();
+      this.asignarDestino();
+      this.asignarTransmision();
+      this.TransmisionService.selectedTransmision._id = this.form._id;
+      this.TransmisionService.selectedTransmision.origen = this.form.idOrigen;
+      this.TransmisionService.selectedTransmision.destino = this.form.IdDestino;
+
+      this.OrigenService.selectedOrigen._id = this.form.idOrigen;
+      this.DestinoService.SelectedDestino._id = this.form.IdDestino;
+
+      try {
+        await this.OrigenService.putOrigen(this.OrigenService.selectedOrigen).toPromise();
+        await this.DestinoService.putDestino(this.DestinoService.SelectedDestino).toPromise();
+        await this.TransmisionService.putTransmision(this.TransmisionService.selectedTransmision).toPromise();
+
+        alert("transmisión editata correctamente");
+        this.form._id = null;
+        form.reset();
+        this.getTransmisiones();
+        this.accordion.closeAll();
+
+
+      } catch (error) {
+        console.log(error);
+
+      }
+
+
+
+    }
+
+
+
+
   }
 
   asignarOrigen() {
@@ -207,6 +249,43 @@ export class FormComponent implements OnInit {
     this.TransmisionService.selectedTransmision.descripcion = this.form.descripcion;
     this.TransmisionService.selectedTransmision.usuario = this.form.usuarioRed;
     this.TransmisionService.selectedTransmision.ambiente = this.form.ambiente;
+  }
+
+  AsignarToEditTx(objTransmision: any) {
+    this.form.titulo = objTransmision.transmision.titulo;
+    this.form.descripcion = objTransmision.transmision.descripcion;
+    this.form.nombre = objTransmision.origen.nombre;
+    this.form.telefono = objTransmision.origen.telefono;
+    this.form.email = objTransmision.origen.email;
+    this.form.usuarioRed = objTransmision.origen.usuarioRed;
+    this.form.filial = objTransmision.origen.filial;
+    this.form.dominio = objTransmision.origen.dominio;
+    this.form.subdominio = objTransmision.origen.subdominio;
+    this.form.proceso = objTransmision.origen.proceso;
+    this.form.codigoMac = objTransmision.origen.codigoMac;
+    this.form.ambiente = objTransmision.transmision.ambiente;
+    this.form.usuCnxOri = objTransmision.origen.usuarioCnx;
+    this.form.metAutOri = objTransmision.origen.metodoAutenticacion;
+    this.form.ubiSvrOri = objTransmision.origen.UbicacionServidor;
+    this.form.protocoloTxDest = objTransmision.destino.protocoloTransmision;
+    this.form.puerto = objTransmision.destino.puerto;
+    this.form.tipoSvr = objTransmision.destino.tipoSvr;
+    this.form.servidor = objTransmision.destino.Servidor;
+    this.form.usuCnxDest = objTransmision.destino.usuarioCnx;
+    this.form.usuSvrDest = objTransmision.destino.usuarioConexionDestino;
+    this.form.metAutDest = objTransmision.destino.metodoAutenticacion;
+    this.form.ubiSvrDest = objTransmision.destino.UbicacionServidor;
+    this.form.rutaEntrega = objTransmision.destino.rutaEntrega;
+    this.form._id = objTransmision.transmision._id;
+    this.form.idOrigen = objTransmision.origen._id;
+    this.form.IdDestino = objTransmision.destino._id;
+  }
+
+  resetForm(form: NgForm) {
+    form.reset();
+    this.form._id = null;
+    this.accordion.closeAll();
+
   }
 
 

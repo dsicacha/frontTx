@@ -1,5 +1,7 @@
 <form #transmisionForm="ngForm" (ngSubmit)="addTransmision(transmisionForm)">
-  <mat-accordion>
+ 
+  <mat-accordion multi>
+    <input type="hidden" name="_id" [(ngModel)]="form._id">
     <mat-expansion-panel class="mb-4">
       <mat-expansion-panel-header>
         <mat-panel-title class="borde">
@@ -235,13 +237,16 @@
       <!--</mat-expansion-panel>-->
     </mat-expansion-panel>
 
-    <button class="btn btn-light btn-lg btn-block mb-2">
+    <button class="btn btn-light btn-lg btn-block mb-2" (click)="resetForm(transmisionForm)" type="button">
       Clean
     </button>
     <button class="btn btn-warning btn-lg btn-block mb-2">
       Save
     </button>
   </mat-accordion>
+
+
 </form>
+
 
 

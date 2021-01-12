@@ -35,8 +35,15 @@ export class OrigenService {
 
   deleteOrigen(_id: string) {
     return this.http.delete(this.URL_API + '/' + _id);
-
   };
+
+  getOrigen(_id){
+    return this.http.get(this.URL_API+'/'+_id);
+  }
+
+  putOrigen(origen: Origen){
+    return this.http.put(this.URL_API+'/'+origen._id,origen);
+  }
 
 
 }

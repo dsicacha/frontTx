@@ -4,6 +4,7 @@
             <th>Titulo</th>
             <th>Descripción</th>
             <th>Ambiente</th>
+            <th>Estado</th>
 
             <th>Operaciones</th>
         </tr>
@@ -13,14 +14,11 @@
             <td>{{transmision.titulo}}</td>
             <td>{{transmision.descripcion}}</td>
             <td>{{transmision.ambiente}}</td>
+            <td>Definición</td>
 
             <td>
                 <button type="button" class="btn btn-sm mr-1" (click)="editTx(transmision)" >
                     <i class="material-icons">edit</i> 
-                </button>
-
-                <button type="button" class="btn btn-sm mr-1">
-                    <i class="material-icons">visibility</i> 
                 </button>
               
                 <button type="button" class="btn btn-sm mr-1" (click)="download(transmision._id,transmision.titulo)">
